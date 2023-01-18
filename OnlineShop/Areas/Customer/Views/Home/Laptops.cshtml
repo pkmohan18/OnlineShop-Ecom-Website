@@ -1,0 +1,42 @@
+﻿@using OnlineShop.Models;
+@{
+    ViewData["Title"] = "Home Page";
+}
+<br />
+<br />
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-4" id="Sname">
+            <div class="card mb-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">
+                        <label style="font-size: 23px;color: steelblue">@product.Name</label>
+                    </h4>
+                </div>
+                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" alt="Card Image" class="card-img-top" style="height: 300px;" /> </a>
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <label style="font-size: 20px;color: #a51313"><b>Price : @product.Price</b></label>
+                        </div>
+                        <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-success pull-right btn-outline-info" style="color:whitesmoke">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#Sname ").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+

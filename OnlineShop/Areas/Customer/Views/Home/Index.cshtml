@@ -1,0 +1,90 @@
+﻿@using OnlineShop.Models;
+@using X.PagedList.Mvc.Common;
+@using X.PagedList.Mvc.Core;
+@model X.PagedList.IPagedList<Products>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<head>
+    <style>
+        body{
+            background-color: #fcf8ef;
+        }
+    </style>
+</head>
+
+<br />
+<br />
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-4" id="Sname" >
+            <div class="card mb-4" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal" >
+                        <label style="font-size: 23px;color: steelblue">@product.Name</label>
+                    </h4>
+                </div>
+                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" alt="Card Image" class="card-img-top" style="height: 300px;"/> </a>
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <label style="font-size: 20px;color: #a51313"><b>Price : @product.Price</b></label>
+                        </div>
+                        @if (@User.Identity.Name == null)
+                        {
+                            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-success pull-right btn-outline-info" style="color:whitesmoke" onclick="fun()">Buy Now</a>
+                        }
+                        
+                        else
+                        {
+                            <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-success pull-right btn-outline-info" style="color:whitesmoke">Buy Now</a>
+                        }
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div style="margin-left:41vw">
+    @Html.PagedListPager(Model,c=>Href("~/Customer/Home/Index?page= "+c),X.PagedList.Web.Common.PagedListRenderOptions.Classic)
+</div>
+
+@section scripts{
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#Sname ").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            var save = '@TempData["save"]'
+            if (save != '') {
+                alertify.success(save);
+            }
+            var edit = '@TempData["edit"]'
+            if (edit != '') {
+                alertify.success(edit);
+            }
+            var del = '@TempData["delete"]'
+            if (del != '') {
+                alertify.error(del);
+            }
+        })
+    </script>
+    <script>
+        function fun(){
+            alert("Please Login!...")
+        }
+    </script>
+}
+
+
